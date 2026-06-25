@@ -1,0 +1,15 @@
+Name,Status,Definition,Acronym,Resources,Related Terms,Synonyms,Stewards,Experts,Parent Term Name
+Customer,Approved,An individual or organization that has purchased or may purchase goods from Lumina Retail Co.,,,Loyalty Member;Order,Shopper;Buyer,maya.chen@lumina.example,,
+Loyalty Member,Approved,A Customer enrolled in the Lumina Rewards program and assigned a unique loyalty number (LUM-########).,,,Customer,Rewards Member,maya.chen@lumina.example,,Customer
+Loyalty Number,Approved,A unique identifier assigned to a Loyalty Member. Format: LUM- followed by 8 digits.,,,Loyalty Member,Rewards ID,maya.chen@lumina.example,,Loyalty Member
+Personally Identifiable Information,Approved,Any data that can identify a specific individual (name, email, phone, national ID, date of birth).,PII,,Sensitive Data,Personal Data,maya.chen@lumina.example,,
+National ID,Approved,A government-issued identifier for a Customer. Highly sensitive PII subject to access restrictions.,,,Personally Identifiable Information,SSN;Tax ID,maya.chen@lumina.example,,Personally Identifiable Information
+Payment Card,Approved,A credit or debit card number used to pay for an Order. In scope for PCI-DSS controls.,PCI,,Sensitive Data;Order,Credit Card,security.team@lumina.example,,
+Marketing Consent,Approved,A Customer's recorded opt-in or opt-out decision for marketing communications under GDPR/CCPA.,,,Customer,Opt-in Flag,privacy.office@lumina.example,,Customer
+Order,Approved,A confirmed purchase transaction placed by a Customer for one or more Products.,,,Customer;Product;Order Line,Purchase;Transaction,raj.patel@lumina.example,,
+Order ID,Approved,A unique identifier for an Order. Format: ORD- followed by 10 digits.,,,Order,Transaction ID,raj.patel@lumina.example,,Order
+Product,Approved,A sellable item in the Lumina catalog identified by a SKU.,,,Order;Product Category,Item;Article,raj.patel@lumina.example,,
+SKU,Approved,Stock Keeping Unit. A unique product identifier. Format: SKU-AAA-##### (3 letters + 5 digits).,,,Product,Product Code,raj.patel@lumina.example,,Product
+Product Category,Approved,A grouping of Products by type (e.g., Apparel, Electronics) used for merchandising and reporting.,,,Product,Department,raj.patel@lumina.example,,Product
+Sensitive Data,Approved,Data requiring elevated protection due to privacy, regulatory, or contractual obligations.,,,Personally Identifiable Information;Payment Card,Confidential Data,security.team@lumina.example,,
+Total Amount,Approved,The monetary value of an Order line: unit_price multiplied by quantity.,,,Order,Order Value,raj.patel@lumina.example,,Order
