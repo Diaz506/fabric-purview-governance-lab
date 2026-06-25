@@ -10,6 +10,12 @@ From the repo root:
 python data\generate_synthetic_data.py --rows 500 --products 120 --out out
 ```
 
+> ⚠️ **Always invoke the script with `python`** (e.g. `python generate_synthetic_data.py …`).
+> On Windows, running it directly as `.\generate_synthetic_data.py` relies on the
+> `.py` file association and can **exit silently without generating anything** or
+> open the file in an editor. If you saw no `Generating…` output, that's why —
+> re-run it with `python` prefixed.
+
 Output (in `.\out`):
 - `customers.csv` — 500 rows
 - `orders.csv` — 1,500 rows

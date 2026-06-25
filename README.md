@@ -57,6 +57,8 @@ Work through the labs in order — each opens with a **Mission Briefing**:
 ## Quick start
 ```powershell
 # 1. Generate synthetic data (no pip install needed)
+# Always run it with `python` — do NOT run `.\generate_synthetic_data.py`
+# directly on Windows (it can exit silently via the .py file association).
 python data\generate_synthetic_data.py --rows 500 --products 120 --out out
 
 # 2. Follow the docs in order
