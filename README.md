@@ -19,6 +19,19 @@ custom classification rules — using fully **synthetic** retail data.
 5. **Custom classification rules** for loyalty numbers, SKUs, and order IDs.
 6. A **10-minute demo talk track**.
 
+## Labs
+Work through the labs in order — each opens with a **Mission Briefing**:
+
+| # | Lab | What you'll do |
+|---|-----|----------------|
+| 00 | [Prerequisites](docs/00-prerequisites.md) | Accounts, licenses, permissions |
+| 01 | [Create Fabric artifacts](docs/01-fabric-artifacts.md) | Workspace + lakehouse |
+| 02 | [Generate & load synthetic data](docs/02-generate-synthetic-data.md) | Generate CSVs, load Delta tables |
+| 03 | [Register & scan Fabric in Purview](docs/03-purview-register-scan.md) | Register source, run a scan |
+| 04 | [Create glossary terms](docs/04-glossary-terms.md) | Import 14 retail terms |
+| 05 | [Custom classification rules](docs/05-classification-rules.md) | Loyalty number, SKU, order ID rules |
+| 06 | [Run the demo](docs/06-run-the-demo.md) | 10-minute talk track |
+
 ## Repository layout
 ```
 .
