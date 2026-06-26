@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Microsoft Purview &amp; Fabric — Governance Overview | Lumina Retail Lab</title>
+<style>
+  :root {
+    --bg: #0f1320;
+    --panel: #171c2e;
+    --panel-2: #1f2640;
+    --text: #e8ecf6;
+    --muted: #a3adc7;
+    --accent: #4f8cff;
+    --accent-2: #8a6cff;
+    --good: #2fbf71;
+    --warn: #f5a623;
+    --bad: #ef5b6d;
+    --border: #2a3252;
+    --shadow: 0 8px 28px rgba(0,0,0,.35);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+
+  /* Hero */
+  header.hero {
+    background:
+      radial-gradient(1200px 400px at 15% -10%, rgba(79,140,255,.25), transparent 60%),
+      radial-gradient(900px 380px at 95% 0%, rgba(138,108,255,.22), transparent 55%),
+      linear-gradient(180deg, #141a2c, #0f1320);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 0 48px;
+  }
+  .badge {
+    display: inline-block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid var(--border); background: rgba(79,140,255,.08);
+    padding: 6px 12px; border-radius: 999px; margin-bottom: 18px;
+  }
+  h1 { font-size: clamp(28px, 4.4vw, 46px); line-height: 1.12; margin: 0 0 14px; }
+  h1 .grad {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .lede { color: var(--muted); font-size: clamp(16px, 2vw, 19px); max-width: 760px; }
+  .hero-actions { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 11px 18px; border-radius: 10px; font-weight: 600;
+    border: 1px solid var(--border);
+  }
+  .btn.primary { background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: #fff; border: none; }
+  .btn.ghost { color: var(--text); background: var(--panel-2); }
+
+  /* Sections */
+  section { padding: 54px 0; border-bottom: 1px solid var(--border); }
+  section h2 { font-size: clamp(22px, 3vw, 30px); margin: 0 0 6px; }
+  section h2 .num { color: var(--accent); font-weight: 700; margin-right: 10px; }
+  .sub { color: var(--muted); margin: 0 0 26px; max-width: 760px; }
+
+  /* Process steps */
+  .steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+  .step {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px; box-shadow: var(--shadow); position: relative; transition: transform .15s ease, border-color .15s;
+  }
+  .step:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .step .n {
+    font-size: 13px; font-weight: 700; color: #fff; background: linear-gradient(90deg,var(--accent),var(--accent-2));
+    width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; margin-bottom: 12px;
+  }
+  .step h3 { margin: 0 0 6px; font-size: 17px; }
+  .step p { margin: 0 0 12px; color: var(--muted); font-size: 14.5px; }
+  .step a.lab { font-weight: 600; font-size: 14px; }
+
+  /* Cards grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .card .ico { font-size: 22px; margin-bottom: 8px; }
+  .card h3 { margin: 0 0 8px; font-size: 17px; }
+  .card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .card.concept h3 { color: var(--accent); }
+
+  /* Callout */
+  .callout {
+    background: linear-gradient(180deg, rgba(79,140,255,.10), rgba(138,108,255,.06));
+    border: 1px solid var(--border); border-left: 4px solid var(--accent);
+    border-radius: 12px; padding: 16px 18px; margin: 18px 0; color: var(--text);
+  }
+  .callout strong { color: #fff; }
+
+  /* Table */
+  .table-scroll { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; min-width: 640px; background: var(--panel); }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 14.5px; vertical-align: top; }
+  th { background: var(--panel-2); color: var(--text); font-weight: 600; position: sticky; top: 0; }
+  td .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+  .pill.full { background: rgba(47,191,113,.16); color: var(--good); }
+  .pill.partial { background: rgba(245,166,35,.16); color: var(--warn); }
+  .pill.none { background: rgba(239,91,109,.16); color: var(--bad); }
+
+  /* Two-col split */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) { .split { grid-template-columns: 1fr; } }
+  .list-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  .list-card h3 { margin: 0 0 12px; font-size: 17px; }
+  .list-card ul { margin: 0; padding-left: 18px; color: var(--muted); }
+  .list-card li { margin-bottom: 8px; }
+  .check li::marker { content: "✔  "; color: var(--good); }
+  .cross li::marker { content: "✘  "; color: var(--bad); }
+
+  footer { padding: 40px 0 60px; color: var(--muted); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .muted { color: var(--muted); }
+  .tag { font-size: 12px; color: var(--muted); border:1px solid var(--border); padding: 2px 8px; border-radius: 999px; }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .step, .card, .list-card, table { box-shadow: none; }
+    header.hero, section, footer { border-color: #ccc; }
+    a { color: #0b57d0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">Lumina Retail Co. · Governance Lab</span>
+    <h1>Governing <span class="grad">Microsoft Fabric</span> data with <span class="grad">Microsoft Purview</span></h1>
+    <p class="lede">
+      A practical, story-driven overview of how Purview catalogs, classifies, and governs
+      retail data flowing from Fabric — what the platform <em>covers</em>, the key concepts
+      behind it, and the broader <strong>data-dictionary</strong> needs that sit outside the tool.
+    </p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#process">View the process</a>
+      <a class="btn ghost" href="#features">Purview features</a>
+      <a class="btn ghost" href="#gaps">What it doesn't cover</a>
+    </div>
+  </div>
+</header>
+
+<!-- 1. PROCESS -->
+<section id="process">
+  <div class="wrap">
+    <h2><span class="num">01</span>The process</h2>
+    <p class="sub">
+      Data steward <strong>Maya Chen</strong> takes Lumina's customer, order, and product
+      data from raw CSVs in Fabric to a fully governed catalog. Each step maps to a hands-on lab.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <div class="n">00</div><h3>Prerequisites</h3>
+        <p>Accounts, licenses, and the Purview/Fabric roles you need before starting.</p>
+        <a class="lab" href="docs/00-prerequisites.md">Open lab →</a>
+      </div>
+      <div class="step">
+        <div class="n">01</div><h3>Fabric artifacts</h3>
+        <p>Create the workspace and <em>LuminaLakehouse</em> that will hold the data.</p>
+        <a class="lab" href="docs/01-fabric-artifacts.md">Open lab →</a>
+      </div>
+      <div class="step">
+        <div class="n">02</div><h3>Synthetic data</h3>
+        <p>Generate PII-rich CSVs and load them into Delta tables.</p>
+        <a class="lab" href="docs/02-generate-synthetic-data.md">Open lab →</a>
+      </div>
+      <div class="step">
+        <div class="n">03</div><h3>Register &amp; scan</h3>
+        <p>Connect Purview to Fabric and scan to discover assets &amp; classify columns.</p>
+        <a class="lab" href="docs/03-purview-register-scan.md">Open lab →</a>
+      </div>
+      <div class="step">
+        <div class="n">04</div><h3>Glossary terms</h3>
+        <p>Import 14 retail business terms with hierarchy and stewards.</p>
+        <a class="lab" href="docs/04-glossary-terms.md">Open lab →</a>
+      </div>
+      <div class="step">
+        <div class="n">05</div><h3>Classification rules</h3>
+        <p>Teach Purview custom patterns: loyalty number, SKU, order ID.</p>
+        <a class="lab" href="docs/05-classification-rules.md">Open lab →</a>
+      </div>
+      <div class="step">
+        <div class="n">06</div><h3>Run the demo</h3>
+        <p>A 10-minute talk track tying classifications, glossary, and stewardship together.</p>
+        <a class="lab" href="docs/06-run-the-demo.md">Open lab →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. KEY CONCEPTS -->
+<section id="concepts">
+  <div class="wrap">
+    <h2><span class="num">02</span>Key concepts &amp; terminology</h2>
+    <p class="sub">
+      Purview vocabulary can be confusing because the product is evolving from the classic
+      <em>Data Map</em> experience to the new <em>Unified Catalog</em>. These are the terms you'll hear.
+    </p>
+
+    <div class="callout">
+      <strong>Governance domain</strong> — In the new Microsoft Purview <em>Unified Catalog</em>, a
+      governance domain is the top-level organizing boundary for governance: it groups business
+      glossary terms, data products, owners/stewards, and policies for a business area (e.g.
+      <em>“Lumina Retail”</em> or <em>“Finance”</em>). Think of it as <strong>“who owns this slice of
+      governance and what vocabulary applies here.”</strong> It is a business/ownership boundary —
+      distinct from a <em>collection</em>, which is the technical boundary used by the Data Map.
+    </div>
+
+    <div class="grid">
+      <div class="card concept"><div class="ico">🗺️</div><h3>Data Map</h3>
+        <p>The technical foundation: a live map of scanned assets, their schema, and metadata across sources.</p></div>
+      <div class="card concept"><div class="ico">🗂️</div><h3>Collection</h3>
+        <p>A hierarchical container in the Data Map used to organize sources and apply <em>technical</em> RBAC permissions.</p></div>
+      <div class="card concept"><div class="ico">🔌</div><h3>Data source</h3>
+        <p>A registered system Purview connects to (Fabric, Azure SQL, ADLS, Snowflake…). Fabric is registered once per tenant.</p></div>
+      <div class="card concept"><div class="ico">🔍</div><h3>Scan &amp; scan rule set</h3>
+        <p>A scan harvests metadata and runs classifications. A <em>scan rule set</em> bundles which classifications (built-in + custom) to apply.</p></div>
+      <div class="card concept"><div class="ico">🏷️</div><h3>Classification</h3>
+        <p>A tag applied to a column/asset indicating <em>what the data is</em> (Email, Credit Card, custom Loyalty Number). Auto-applied during scan.</p></div>
+      <div class="card concept"><div class="ico">🔒</div><h3>Sensitivity label</h3>
+        <p>A protection label (Confidential, Highly Confidential) from Purview Information Protection. <em>Different from a classification</em> — labels enforce protection, classifications describe content.</p></div>
+      <div class="card concept"><div class="ico">📖</div><h3>Glossary term</h3>
+        <p>A governed business definition (e.g. <em>Loyalty Number</em>) with steward, status, hierarchy, and synonyms — linkable to technical columns.</p></div>
+      <div class="card concept"><div class="ico">📦</div><h3>Data product</h3>
+        <p>In Unified Catalog, a curated, published bundle of data assets governed within a domain for consumers to discover and request access.</p></div>
+      <div class="card concept"><div class="ico">🧩</div><h3>Asset</h3>
+        <p>Any discovered object: a table, file, column, report, or dataset. Assets carry schema, classifications, lineage, and term links.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <h2><span class="num">03</span>What Purview covers</h2>
+    <p class="sub">Capabilities the platform provides out of the box (the ones this lab exercises are marked).</p>
+    <div class="grid">
+      <div class="card"><div class="ico">🗺️</div><h3>Data Map &amp; discovery <span class="tag">in lab</span></h3>
+        <p>Automated scanning of Fabric, Azure, multicloud, and SaaS sources; harvests schema and technical metadata into a searchable map.</p></div>
+      <div class="card"><div class="ico">📖</div><h3>Business glossary <span class="tag">in lab</span></h3>
+        <p>Hierarchical terms with synonyms, acronyms, stewards, approval status, and bulk CSV import. Link terms to physical columns.</p></div>
+      <div class="card"><div class="ico">🏷️</div><h3>Classifications <span class="tag">in lab</span></h3>
+        <p>200+ built-in classifiers (PII, financial, health) plus custom regex rules and thresholds for org-specific identifiers.</p></div>
+      <div class="card"><div class="ico">🔗</div><h3>Lineage &amp; impact analysis</h3>
+        <p>End-to-end visualization of how data moves and transforms across pipelines, dataflows, and reports; assess change impact.</p></div>
+      <div class="card"><div class="ico">✅</div><h3>Data quality</h3>
+        <p>Define rules (completeness, uniqueness, validity), profile data, and track quality scorecards over time within a domain.</p></div>
+      <div class="card"><div class="ico">🔎</div><h3>Unified Catalog &amp; search</h3>
+        <p>A single search surface across assets, glossary, lineage, and quality — with governance domains and data products.</p></div>
+      <div class="card"><div class="ico">🔒</div><h3>Information protection</h3>
+        <p>Sensitivity labels and label-based protection that travel with the data, integrated with Microsoft 365.</p></div>
+      <div class="card"><div class="ico">🛡️</div><h3>Access &amp; DLP policies</h3>
+        <p>Policy-based access provisioning and data loss prevention scoped by classification and source.</p></div>
+      <div class="card"><div class="ico">🤖</div><h3>AI-assisted governance</h3>
+        <p>Suggestions for classification, glossary term linking, and descriptions to speed up curation at scale.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. GAPS -->
+<section id="gaps">
+  <div class="wrap">
+    <h2><span class="num">04</span>Beyond Purview: the broader data dictionary</h2>
+    <p class="sub">
+      Purview is a <strong>governance and catalog</strong> platform, not a full
+      <strong>data dictionary / data modeling</strong> tool. A complete enterprise data dictionary
+      describes the precise semantics and rules of every data element — much of which Purview only
+      partially covers or leaves to other tools.
+    </p>
+
+    <div class="split">
+      <div class="list-card">
+        <h3>✔ What a catalog like Purview does well</h3>
+        <ul class="check">
+          <li>Discover &amp; inventory physical assets automatically</li>
+          <li>Tag sensitive data and enforce governance policy</li>
+          <li>Provide business definitions and ownership</li>
+          <li>Show lineage and search across the estate</li>
+        </ul>
+      </div>
+      <div class="list-card">
+        <h3>✘ What a data dictionary additionally needs</h3>
+        <ul class="cross">
+          <li>Precise field-level semantics: data type, format, units, precision</li>
+          <li>Allowable values / code sets / reference data with meanings</li>
+          <li>Validation, derivation, and calculation rules</li>
+          <li>Conceptual &amp; logical models (entities, keys, cardinality)</li>
+          <li>Versioned definition history with approval workflow</li>
+          <li>Canonical / source-of-truth mapping across systems</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="margin-top:30px;">Coverage at a glance</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Data dictionary need</th><th>Purview support</th><th>Notes / workaround</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Technical metadata (schema, types)</td><td><span class="pill full">Full</span></td><td>Harvested automatically on scan.</td></tr>
+          <tr><td>Business definitions &amp; ownership</td><td><span class="pill full">Full</span></td><td>Glossary terms + stewards (this lab).</td></tr>
+          <tr><td>Sensitivity / PII tagging</td><td><span class="pill full">Full</span></td><td>Built-in + custom classifications.</td></tr>
+          <tr><td>Lineage / impact analysis</td><td><span class="pill full">Full</span></td><td>Visual lineage across Fabric &amp; pipelines.</td></tr>
+          <tr><td>Field descriptions, units, format</td><td><span class="pill partial">Partial</span></td><td>Free-text on columns/terms; not structured or validated.</td></tr>
+          <tr><td>Allowable values / code sets</td><td><span class="pill partial">Partial</span></td><td>Can note in term definition; no managed reference-data store.</td></tr>
+          <tr><td>Data quality rules &amp; scores</td><td><span class="pill partial">Partial</span></td><td>Data Quality exists but is domain-scoped and evolving.</td></tr>
+          <tr><td>Validation / derivation logic</td><td><span class="pill none">None</span></td><td>Document externally; enforce in the pipeline/transform layer.</td></tr>
+          <tr><td>Conceptual / logical data models</td><td><span class="pill none">None</span></td><td>Use a modeling tool (erwin, ER/Studio, dbt docs, SqlDBM).</td></tr>
+          <tr><td>Versioned definition history / approvals</td><td><span class="pill none">None</span></td><td>Limited audit; pair with Git or a dedicated MDM/glossary tool.</td></tr>
+          <tr><td>Reference / master data management</td><td><span class="pill none">None</span></td><td>Out of scope — use an MDM solution.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 5. RECOMMENDATIONS -->
+<section id="recommendations">
+  <div class="wrap">
+    <h2><span class="num">05</span>Putting it together</h2>
+    <p class="sub">Use Purview as the governance backbone, and complement it where a full data dictionary is required.</p>
+    <div class="grid">
+      <div class="card"><div class="ico">🏛️</div><h3>Govern with Purview</h3>
+        <p>Catalog, classify, link glossary terms, and enforce policy across Fabric and the wider estate.</p></div>
+      <div class="card"><div class="ico">📐</div><h3>Model elsewhere</h3>
+        <p>Capture entities, keys, and logical models in a modeling tool (erwin, ER/Studio, dbt, SqlDBM) and reference them from the glossary.</p></div>
+      <div class="card"><div class="ico">📋</div><h3>Manage reference data</h3>
+        <p>Keep code sets and allowable values in an MDM/reference-data service; surface the meaning via glossary terms.</p></div>
+      <div class="card"><div class="ico">⚙️</div><h3>Enforce rules in pipelines</h3>
+        <p>Implement validation and derivation logic in Fabric pipelines/notebooks; document the intent in the dictionary.</p></div>
+    </div>
+    <div class="callout" style="margin-top:24px;">
+      <strong>Rule of thumb:</strong> Purview answers <em>“what data do we have, what is it, who owns it, and is it sensitive?”</em>
+      A data dictionary additionally answers <em>“exactly how is each field defined, what values are valid, and how is it derived?”</em>
+      You typically need both.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div>Lumina Retail Co. — Fabric → Purview Governance Lab</div>
+      <div class="muted">Synthetic data only · for demonstration &amp; teaching</div>
+    </div>
+    <div>
+      <a href="https://github.com/Diaz506/fabric-purview-governance-lab">GitHub repo</a> ·
+      <a href="https://learn.microsoft.com/purview/">Microsoft Purview docs</a> ·
+      <a href="README.md">README</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

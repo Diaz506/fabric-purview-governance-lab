@@ -22,6 +22,11 @@ custom classification rules — using fully **synthetic** retail data.
 ## Labs
 Work through the labs in order — each opens with a **Mission Briefing**:
 
+> 📄 **New here?** Open [`purview-overview.html`](purview-overview.html) for a visual
+> overview of the process, Purview features and key concepts (incl. governance domains),
+> and the broader data-dictionary needs that sit outside the tool.
+
+
 | # | Lab | What you'll do |
 |---|-----|----------------|
 | 00 | [Prerequisites](docs/00-prerequisites.md) | Accounts, licenses, permissions |
