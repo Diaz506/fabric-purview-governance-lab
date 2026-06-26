@@ -20,10 +20,20 @@ small hierarchy (e.g., `Loyalty Number` → parent `Loyalty Member` → parent `
    (the sample uses `@lumina.example`; swap for real users or clear the column).
 
 ## Option B — Unified Catalog (new Purview portal)
-The new portal organizes terms under a **governance domain**:
+The new portal organizes terms under a **governance domain** and uses a
+**different CSV template** than the classic Data Map glossary. Its sample
+template columns are: `name, description, owners, experts, acronyms, resources`.
+Use the matching file
+[`glossary/unified-catalog-terms-import.csv`](../glossary/unified-catalog-terms-import.csv).
 1. **Unified Catalog → Governance domains → New** → `Lumina Retail`.
-2. Inside the domain, **Glossary → New term**, or use **Bulk** import where
-   available. Create the terms from the CSV (definitions provided there).
+2. Inside the domain, **Glossary → Bulk import** → download the sample template
+   once to confirm the column order, then upload `unified-catalog-terms-import.csv`.
+   - `owners`/`experts` must be **real users in your tenant**. The sample uses
+     `@lumina.example` placeholders — swap them for real users or clear the
+     column, otherwise the import fails on user validation.
+   - This template has no parent/related/synonyms columns, so set the term
+     **hierarchy** (e.g., `Loyalty Number` → `Loyalty Member` → `Customer`) in
+     the portal after import (or use Option A to import hierarchy directly).
 3. Assign **owners/stewards** and set status to **Published/Approved**.
 
 ## Option C — Create a few by hand (fastest for a live demo)
